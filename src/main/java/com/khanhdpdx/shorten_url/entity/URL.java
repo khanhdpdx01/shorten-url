@@ -1,10 +1,11 @@
 package com.khanhdpdx.shorten_url.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Date;
 
-@Document(collation = "url")
+@Document(collection = "shorten_url")
 public class URL {
     private String hash;
     private String originURL;

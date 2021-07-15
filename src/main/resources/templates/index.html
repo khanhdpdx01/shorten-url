@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login Page</title>
+</head>
+<body>
+<div class="main-content">
+    <h3>Shorten url</h3>
+    <form th:action="@{/shorten-url}" th:object="${originURL}" method="POST">
+        <input type="text" th:field="*{originURL}" name="originURL" placeholder="Dán link vào đây"/>
+        <button type="submit">Shorten url</button> <br />
+    </form>
+</div>
+</body>
+</html>
