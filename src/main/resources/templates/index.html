@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<div class="main-content">
-    <h3>Shorten url</h3>
-    <form th:action="@{/shorten-url}" th:object="${originURL}" method="POST">
-        <input type="text" th:field="*{originURL}" name="originURL" placeholder="Dán link vào đây"/>
-        <button type="submit">Shorten url</button> <br />
-    </form>
+<div class="body">
+    <header>
+        <nav class="nav">
+            <a class="nav-logo" th:href="">
+                <img th:src="@{/img/logo.png}">
+            </a>
+            <ul class="nav-ul">
+                <li class="nav-li">
+                    <button>Sign up</button>
+                </li>
+                <li class="nav-li">
+                    <button>Sign in</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="main-left">
+            <h1>Short links, big results</h1>
+            <h2>A URL shortener built with powerful tools to help you grow and protect your brand.</h2>
+        </div>
+        <img alt="This is a picture" class="main-right" th:src="@{/img/picture.jpg}">
+    </div>
+    <div class="area-input">
+        <div class="area-input-wrapper">
+            <form method="POST" th:action="@{/shorten-url}" th:object="${originURL}">
+                <input name="originURL" placeholder="Dán link vào đây" th:field="*{originURL}" type="text">
+                <button class="btn-shorten">Shorten</button>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

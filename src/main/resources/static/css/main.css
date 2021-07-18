@@ -1,0 +1,116 @@
+:root {
+    --grid-with: 1200px;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "ProximaNova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    width: 100%;
+}
+
+.body {
+    margin: auto;
+}
+
+/* Navigation */
+header {
+    height: 100px;
+    box-shadow: 0 .5px 5px 1px rgba(0, 0, 0, .2);
+}
+
+.nav {
+    width: var(--grid-with);
+    height: 100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.nav-ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-li {
+    list-style-type: none;
+    margin: 0 1rem;
+
+}
+
+button {
+    background: #2a5bd7;
+    width: 90px;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid white;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white;
+    cursor: pointer;
+}
+
+/* main content */
+.main {
+    width: var(--grid-with);
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-left {
+    flex-basis: 60%;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: rgb(37, 38, 40);
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 400;
+    color: rgb(86, 87, 91);
+}
+
+img {
+    width: 600px;
+}
+
+/* input shorten url */
+.area-input {
+    width: 100%;
+    background-color: #0b1736;
+}
+
+.area-input-wrapper {
+    width: var(--grid-with);
+    margin: auto;
+    padding: 20px 0;
+}
+
+input {
+    width: 70%;
+    height: 60px;
+    border-radius: 8px;
+    font-size: 20px;
+    color: #36383b;
+    padding: 0 20px;
+}
+
+.btn-shorten {
+    width: 20%;
+    height: 60px;
+    background: rgb(27, 57, 135);
+    font-size: 20px;
+    border: 1px solid #000;
+    margin: 0 2rem;
+}
