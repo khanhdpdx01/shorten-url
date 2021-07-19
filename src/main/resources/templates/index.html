@@ -2,15 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Login Page</title>
+    <title>Shorten</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="body">
     <header>
         <nav class="nav">
-            <a class="nav-logo" th:href="">
-                <img th:src="@{/img/logo.png}">
+            <a th:href="@{#}" class="nav-logo">
+                <img th:src="@{/img/logo.png}" alt="" class="logo">
             </a>
             <ul class="nav-ul">
                 <li class="nav-li">
@@ -20,21 +22,49 @@
                     <button>Sign in</button>
                 </li>
             </ul>
+            <input type="checkbox" id="check">
+            <label for="check" class="btn-check">
+                <i class="fa fa-bars"></i>
+            </label>
+            <div class="nav-responsive">
+                <ul>
+                    <li><a th:href="@{#}">Sign in</a></li>
+                    <li><a th:href="@{#}">Sign up</a></li>
+                </ul>
+            </div>
         </nav>
+
     </header>
     <div class="main">
         <div class="main-left">
             <h1>Short links, big results</h1>
             <h2>A URL shortener built with powerful tools to help you grow and protect your brand.</h2>
         </div>
-        <img alt="This is a picture" class="main-right" th:src="@{/img/picture.jpg}">
+        <img th:src="@{/img/picture.jpg}" alt="This is a picture" class="main-right">
     </div>
     <div class="area-input">
         <div class="area-input-wrapper">
-            <form method="POST" th:action="@{/shorten-url}" th:object="${originURL}">
-                <input name="originURL" placeholder="Dán link vào đây" th:field="*{originURL}" type="text">
+            <form method="POST" th:action="@{/shorten-url}" th:object="${originURL}" class="form-shorten">
+                <input type="text" placeholder="Shorten your link" class="input-shorten">
                 <button class="btn-shorten">Shorten</button>
             </form>
+        </div>
+        <div class="area-output-wrapper">
+            <ul class="history">
+                <li class="link">
+                        <span class="origin-url">
+                            https://www.google.com/search?q=bitly&oq=bit&aqs=edge.0.69i59j69i57j0i433l2j69i60l3.2241j0j1&sourceid=chrome&ie=UTF-8
+                        </span>
+                    <span class="shortened-url">
+                            <a th:href="@{#}">https://bit.ly/3euKcSQ</a>
+                            <button class="btn-copy">Copy</button>
+                        </span>
+                </li>
+                <li class="promo-customize">
+                    <h5>Want to customize, brand, and track your links?</h5>
+                    <button class="btn-start">Get Started</button>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
