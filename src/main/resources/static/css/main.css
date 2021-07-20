@@ -139,13 +139,17 @@ button {
     padding: 0 20px;
 }
 
-.btn-shorten {
+.btn-shorten, .btn-shorted-copy {
     width: 20%;
     height: 60px;
     background: rgb(27, 57, 135);
     font-size: 20px;
     border: 1px solid #000;
     margin-left: 2rem;
+}
+
+.btn-shorted-copy {
+    display: none;
 }
 
 .nav-logo {

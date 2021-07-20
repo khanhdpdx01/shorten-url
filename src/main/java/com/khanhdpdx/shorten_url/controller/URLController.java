@@ -33,7 +33,6 @@ public class URLController {
     @ResponseBody
     public ResponseEntity<Object> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
         String originURL = urlRepository.getFirstByHash(hash).getOriginURL();
-        System.out.println(originURL);
         URI uri = new URI(originURL);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(uri);
@@ -48,10 +47,10 @@ public class URLController {
 
     @PostMapping("/shorten-url")
     @ResponseBody
-    public ShortenURL shortenURL(@ModelAttribute("originURL") UrlDTO originURL) {
+    public ShortenURL shortenURL(String originURL) {
         String hash = RandomStringUtils.randomAlphabetic(7);
         urlRepository.save(new URL(hash,
-                originURL.getOriginURL(),
+                originURL,
                 new Date(),
                 new Date(new Date().getTime() + 60 * 60 * 24 * 365)));
         return new ShortenURL(hash);

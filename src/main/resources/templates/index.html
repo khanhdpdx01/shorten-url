@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Shorten</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/responsive.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="body">
     <header>
         <nav class="nav">
-            <a th:href="@{#}" class="nav-logo">
-                <img th:src="@{/img/logo.png}" alt="" class="logo">
+            <a class="nav-logo" th:href="@{#}">
+                <img alt="" class="logo" th:src="@{/img/logo.png}">
             </a>
             <ul class="nav-ul">
                 <li class="nav-li">
@@ -23,8 +23,8 @@
                     <button>Sign in</button>
                 </li>
             </ul>
-            <input type="checkbox" id="check">
-            <label for="check" class="btn-check">
+            <input id="check" type="checkbox">
+            <label class="btn-check" for="check">
                 <i class="fa fa-bars"></i>
             </label>
             <div class="nav-responsive">
@@ -41,33 +41,128 @@
             <h1>Short links, big results</h1>
             <h2>A URL shortener built with powerful tools to help you grow and protect your brand.</h2>
         </div>
-        <img th:src="@{/img/picture.jpg}" alt="This is a picture" class="main-right">
+        <img alt="This is a picture" class="main-right" th:src="@{/img/picture.jpg}">
     </div>
     <div class="area-input">
         <div class="area-input-wrapper">
-            <form method="POST" th:action="@{/shorten-url}" th:object="${originURL}" class="form-shorten">
-                <input type="text" placeholder="Shorten your link" class="input-shorten">
-                <button class="btn-shorten">Shorten</button>
+            <form class="form-shorten" method="POST">
+                <input class="input-shorten" placeholder="Shorten your link" type="text">
+                <button class="btn-shorten" type="submit">Shorten</button>
+                <button class="btn-shorted-copy" type="button">Copy</button>
             </form>
         </div>
         <div class="area-output-wrapper">
             <ul class="history">
-                <li class="link">
-                        <span class="origin-url">
-                            https://www.google.com/search?q=bitly&oq=bit&aqs=edge.0.69i59j69i57j0i433l2j69i60l3.2241j0j1&sourceid=chrome&ie=UTF-8
-                        </span>
-                    <span class="shortened-url">
-                            <a th:href="@{#}">https://bit.ly/3euKcSQ</a>
-                            <button class="btn-copy">Copy</button>
-                        </span>
-                </li>
-                <li class="promo-customize">
-                    <h5>Want to customize, brand, and track your links?</h5>
-                    <button class="btn-start">Get Started</button>
-                </li>
             </ul>
         </div>
     </div>
 </div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const hashes = localStorage.getItem('hashes');
+        loadShortedURLs(JSON.parse(hashes));
+
+        $(document).on('submit', '.form-shorten', function (event) {
+            event.preventDefault();
+            const originURL = $('.input-shorten').val();
+
+            if(originURL == "") alert("Please fill in input");
+            else
+                $.ajax({
+                type: 'POST',
+                url: '/shorten-url',
+                data: {originURL: originURL},
+                dataType: 'json',
+                success: (response) => {
+                    const shortedURL = response["shortenURL"];
+                    console.log(shortedURL);
+
+                    let newHashes;
+                    if (hashes == null) {
+                        newHashes = [];
+                        loadShoterdURLIfHasNotURL(originURL, shortedURL);
+                    } else {
+                        newHashes = JSON.parse(hashes);
+                        loadShoterdURLIfHasURL(originURL, shortedURL);
+                    }
+
+                    newHashes.push({
+                        originURL: originURL,
+                        shortedURL: shortedURL
+                    })
+
+                    localStorage.setItem('hashes', JSON.stringify(newHashes));
+                    $('.btn-shorten').hide();
+                    $('.btn-shorted-copy').show();
+                    $('.input-shorten').val(shortedURL);
+                    $('.input-shorten').css("color","rgb(2, 54, 185)")
+                }
+            })
+        })
+        $(document).on('click', '.btn-shorted-copy', function () {
+            copyToClipboard($('.input-shorten').val())
+        })
+
+        $(document).on('click', '.btn-copy', function () {
+            copyToClipboard($(this).parent().children("a").text())
+        })
+    });
+
+    const loadShortedURLs = function (hashes) {
+        if(hashes != null) {
+            let size = hashes.length;
+
+            for(let i = 0; i < size; ++i) {
+                if(i == 0) {
+                    loadShoterdURLIfHasNotURL(hashes[i].originURL, hashes[i].shortedURL);
+                } else {
+                    loadShoterdURLIfHasURL(hashes[i].originURL, hashes[i].shortedURL);
+                }
+            }
+        }
+    }
+
+    const loadShoterdURLIfHasURL = function (originURL, shortedURL) {
+        $('.history').append(
+                        `<li class="link">
+                            <span class="origin-url">
+                                ${originURL}
+                            </span>
+                            <span class="shortened-url">
+                                <a href="">${shortedURL}</a>
+                                <button class="btn-copy" type="button">Copy</button>
+                            </span>
+                        </li>`);
+    }
+
+    const loadShoterdURLIfHasNotURL = function (originURL, shortedURL) {
+        $('.history').append(`
+                    <li class="link">
+                        <span class="origin-url">
+                            ${originURL}
+                        </span>
+                        <span class="shortened-url">
+                            <a href="">${shortedURL}</a>
+                            <button class="btn-copy" type="button">Copy</button>
+                        </span>
+                    </li>
+                    <li class="promo-customize">
+                        <h5>Want to customize, brand, and track your links?</h5>
+                        <button class="btn-start">Get Started</button>
+                    </li>`);
+    }
+
+    const copyToClipboard = function (text) {
+
+        const elem = document.createElement('textarea');
+        elem.value = text;
+        document.body.appendChild(elem);
+        elem.select();
+        document.execCommand('copy');
+        document.body.removeChild(elem);
+    }
+</script>
 </body>
 </html>
