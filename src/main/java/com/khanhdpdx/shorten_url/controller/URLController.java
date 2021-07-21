@@ -25,7 +25,7 @@ public class URLController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("originURL", new UrlDTO());
+//        model.addAttribute("originURL", new UrlDTO());
         return "index";
     }
 

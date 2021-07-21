@@ -61,6 +61,7 @@
 <script th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        // load shorted url of user when reload or access page
         const hashes = localStorage.getItem('hashes');
         loadShortedURLs(JSON.parse(hashes));
 
@@ -68,7 +69,8 @@
             event.preventDefault();
             const originURL = $('.input-shorten').val();
 
-            if(originURL == "") alert("Please fill in input");
+            if(originURL == "") alert("Please fill in input.");
+            else if(!isUrl(originURL)) alert("Your url is not valid.");
             else
                 $.ajax({
                 type: 'POST',
@@ -94,6 +96,7 @@
                     })
 
                     localStorage.setItem('hashes', JSON.stringify(newHashes));
+
                     $('.btn-shorten').hide();
                     $('.btn-shorted-copy').show();
                     $('.input-shorten').val(shortedURL);
@@ -155,13 +158,21 @@
     }
 
     const copyToClipboard = function (text) {
-
         const elem = document.createElement('textarea');
         elem.value = text;
         document.body.appendChild(elem);
         elem.select();
         document.execCommand('copy');
         document.body.removeChild(elem);
+    }
+
+    const isUrl = function (str)
+    {
+        regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+        if (regexp.test(str))
+            return true;
+        else
+            return false;
     }
 </script>
 </body>
