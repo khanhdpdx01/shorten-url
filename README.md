@@ -1,7 +1,7 @@
-#Welcome to Shorten!
+# Welcome to Shorten!
 
-##Introduce
+## Introduce
 This is a website which is used to create shorter aliases for long URLs.
 
-##Images
-![This is home page image](/img/homepage.png)
+## Images
+![This is home page image](src/main/resources/static/img/homepage.png)
