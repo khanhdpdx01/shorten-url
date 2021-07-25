@@ -2,9 +2,11 @@ package com.khanhdpdx.shorten_url.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class JwtTokenProvider {
     private String jwtSecret;
     private String jwtExpiration;

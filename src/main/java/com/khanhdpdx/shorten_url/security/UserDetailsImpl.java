@@ -85,4 +85,12 @@ public class UserDetailsImpl implements UserDetails {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
