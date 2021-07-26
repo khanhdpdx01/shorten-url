@@ -1,5 +1,6 @@
 package com.khanhdpdx.shorten_url.controller;
 
+import com.khanhdpdx.shorten_url.dto.ApiResponse;
 import com.khanhdpdx.shorten_url.dto.ShortenURL;
 import com.khanhdpdx.shorten_url.entity.URL;
 import com.khanhdpdx.shorten_url.repository.URLRepository;
@@ -33,11 +34,14 @@ public class URLController {
         return "index";
     }
 
-    @GetMapping("/{hash}")
+    @GetMapping("/{hash:^[A-Za-z]+}")
     @ResponseBody
-    public ResponseEntity<Object> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
-        String originURL = urlRepository.getFirstByHash(hash).getOriginURL();
-        URI uri = new URI(originURL);
+    public ResponseEntity<?> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
+        URL url = urlRepository.getFirstByHash(hash);
+        if(url == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse(false, "Url is invalid"));
+        }
+        URI uri = new URI(url.getOriginURL());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(uri);
         return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
