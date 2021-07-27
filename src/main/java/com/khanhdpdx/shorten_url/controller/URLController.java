@@ -3,6 +3,7 @@ package com.khanhdpdx.shorten_url.controller;
 import com.khanhdpdx.shorten_url.dto.ApiResponse;
 import com.khanhdpdx.shorten_url.dto.ShortenURL;
 import com.khanhdpdx.shorten_url.entity.URL;
+import com.khanhdpdx.shorten_url.exception.UrlNotFoundException;
 import com.khanhdpdx.shorten_url.repository.URLRepository;
 import com.khanhdpdx.shorten_url.security.UserDetailsImpl;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -13,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,7 +37,8 @@ public class URLController {
     public ResponseEntity<?> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
         URL url = urlRepository.getFirstByHash(hash);
         if(url == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false, "Url is invalid"));
+            /*return ResponseEntity.badRequest().body(new ApiResponse(false, "Url is invalid"));*/
+            throw new UrlNotFoundException();
         }
         URI uri = new URI(url.getOriginURL());
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -65,4 +64,5 @@ public class URLController {
                 1L));
         return new ShortenURL(hash);
     }
+
 }
