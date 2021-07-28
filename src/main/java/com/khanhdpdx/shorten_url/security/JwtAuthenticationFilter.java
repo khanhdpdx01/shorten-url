@@ -3,6 +3,7 @@ package com.khanhdpdx.shorten_url.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Get user identity and set it on spring security context
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(jwtTokenProvider.getUserNameFromJwtToken(token));
+
         // get jwt token and validate
         if (!jwtTokenProvider.validateJwtToken(token)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);

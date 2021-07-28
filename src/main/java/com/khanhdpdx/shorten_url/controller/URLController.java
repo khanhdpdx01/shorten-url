@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,13 +58,19 @@ public class URLController {
     @ResponseBody
     public ShortenURL shortenURL(String originURL) {
         String hash = RandomStringUtils.randomAlphabetic(7);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        urlRepository.save(new URL(hash,
+        URL url = new URL(hash,
                 originURL,
-                new Date(),
-                new Date(new Date().getTime() + 60 * 60 * 24 * 365),
-                1L));
+                new Date(System.currentTimeMillis()),
+                new Date(System.currentTimeMillis() + 60 * 60 * 24 * 365));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.getPrincipal() instanceof UserDetails) {
+            url.setUserId(((UserDetailsImpl)authentication.getPrincipal()).getId());
+        } else {
+            url.setUserId(null);
+        }
+
+        urlRepository.save(url);
         return new ShortenURL(hash);
     }
-
 }

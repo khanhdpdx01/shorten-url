@@ -11,17 +11,24 @@ public class URL {
     private String originURL;
     private Date creationDate;
     private Date expirationDate;
-    private Long userId;
+    private String userId;
 
     public URL() {
     }
 
-    public URL(String hash, String originURL, Date creationDate, Date expirationDate, Long userId) {
+    public URL(String hash, String originURL, Date creationDate, Date expirationDate, String userId) {
         this.hash = hash;
         this.originURL = originURL;
         this.creationDate = creationDate;
         this.expirationDate = expirationDate;
         this.userId = userId;
+    }
+
+    public URL(String hash, String originURL, Date creationDate, Date expirationDate) {
+        this.hash = hash;
+        this.originURL = originURL;
+        this.creationDate = creationDate;
+        this.expirationDate = expirationDate;
     }
 
     public String getHash() {
@@ -56,11 +63,11 @@ public class URL {
         this.expirationDate = expirationDate;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 }

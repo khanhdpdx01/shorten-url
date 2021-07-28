@@ -12,12 +12,13 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ControllerAdvisor {
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
+        body.put("exception_type",ex.getClass().getName());
 
         return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
-    }
+    }*/
 }

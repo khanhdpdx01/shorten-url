@@ -4,9 +4,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "role")
+@Document(collection = "user")
 public class User {
-    private Long userId;
+    private String _id;
     private String username;
     private String password;
     private String email;
@@ -17,8 +17,8 @@ public class User {
     public User() {
     }
 
-    public User(Long userId, String username, String password, String email, String roleName, Date creationDate, Date updateDate) {
-        this.userId = userId;
+    public User(String _id, String username, String password, String email, String roleName, Date creationDate, Date updateDate) {
+        this._id = _id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -27,12 +27,12 @@ public class User {
         this.updateDate = updateDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserId() {
+        return _id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(String _id) {
+        this._id = _id;
     }
 
     public String getUsername() {
