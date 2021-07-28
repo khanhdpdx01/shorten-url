@@ -7,6 +7,7 @@ import com.khanhdpdx.shorten_url.exception.UrlNotFoundException;
 import com.khanhdpdx.shorten_url.repository.URLRepository;
 import com.khanhdpdx.shorten_url.security.UserDetailsImpl;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 public class URLController {

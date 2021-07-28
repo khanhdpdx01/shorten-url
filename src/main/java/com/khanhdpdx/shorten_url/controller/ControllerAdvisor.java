@@ -1,5 +1,7 @@
 package com.khanhdpdx.shorten_url.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,13 +14,16 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ControllerAdvisor {
-    /*@ExceptionHandler(Exception.class)
+    private static Logger logger = LoggerFactory.getLogger(ControllerAdvice.class);
+
+    @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
         body.put("exception_type",ex.getClass().getName());
+        logger.error(ex.getClass().getName() + ": " + ex.getMessage());
 
         return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
-    }*/
+    }
 }
