@@ -1,9 +1,22 @@
-package com.khanhdpdx.shorten_url.security;
+package com.khanhdpdx.shorten_url.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@PasswordMatches
 public class SignupRequest {
+    @NotBlank
+    @Size(min = 3, max = 20)
     private String username;
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
+    @Size(min = 8, max = 30)
     private String password;
+    @NotBlank
+    @Size(min = 8, max = 30)
     private String confirmPassword;
 
     public SignupRequest(String username, String email, String password, String confirmPassword) {

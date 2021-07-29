@@ -1,7 +1,11 @@
 package com.khanhdpdx.shorten_url.security;
 
+import javax.validation.constraints.NotBlank;
+
 public class JwtRequest {
+    @NotBlank
     private String usernameOrEmail;
+    @NotBlank
     private String password;
 
     public String getUsernameOrEmail() {
