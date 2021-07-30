@@ -6,16 +6,16 @@ import javax.validation.constraints.Size;
 
 @PasswordMatches
 public class SignupRequest {
-    @NotBlank
+    @NotBlank(message = "Not blank")
     @Size(min = 3, max = 20)
     private String username;
-    @NotBlank
+    @NotBlank(message = "Not blank")
     @Email
     private String email;
-    @NotBlank
+    @NotBlank(message = "Not blank")
     @Size(min = 8, max = 30)
     private String password;
-    @NotBlank
+    @NotBlank(message = "Not blank")
     @Size(min = 8, max = 30)
     private String confirmPassword;
 

@@ -36,7 +36,7 @@ public class URLController {
         return "index";
     }
 
-    @GetMapping("/{hash:^[A-Za-z]+}")
+    @GetMapping("/{hash:[A-Za-z]+}")
     @ResponseBody
     public ResponseEntity<?> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
         URL url = urlRepository.getFirstByHash(hash);
