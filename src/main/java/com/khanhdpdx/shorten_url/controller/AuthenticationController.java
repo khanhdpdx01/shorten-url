@@ -2,15 +2,14 @@ package com.khanhdpdx.shorten_url.controller;
 
 import com.khanhdpdx.shorten_url.dto.ApiResponse;
 import com.khanhdpdx.shorten_url.dto.user.SignupRequest;
-import com.khanhdpdx.shorten_url.entity.User;
-import com.khanhdpdx.shorten_url.repository.UserRepository;
-import com.khanhdpdx.shorten_url.security.*;
+import com.khanhdpdx.shorten_url.security.JwtRequest;
+import com.khanhdpdx.shorten_url.security.JwtTokenProvider;
+import com.khanhdpdx.shorten_url.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 public class AuthenticationController {
@@ -31,16 +29,10 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody JwtRequest jwtRequest,
@@ -65,14 +57,7 @@ public class AuthenticationController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
-        User user = new User();
-        user.setUsername(signupRequest.getUsername());
-        user.setEmail(signupRequest.getEmail());
-        user.setCreationDate(new Date());
-        user.setRoleName("ROLE_USER");
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
-        userRepository.save(user);
-
+        userService.save(signupRequest);
         return ResponseEntity.ok(new ApiResponse(true, "User registered successfully"));
     }
 
