@@ -2,6 +2,7 @@ package com.khanhdpdx.shorten_url.service.impl;
 
 import com.khanhdpdx.shorten_url.dto.ShortenURL;
 import com.khanhdpdx.shorten_url.entity.URL;
+import com.khanhdpdx.shorten_url.entity.User;
 import com.khanhdpdx.shorten_url.exception.UrlNotFoundException;
 import com.khanhdpdx.shorten_url.repository.URLRepository;
 import com.khanhdpdx.shorten_url.security.UserDetailsImpl;
@@ -13,6 +14,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.Date;
 import java.util.List;
 
@@ -39,16 +44,20 @@ public class URLServiceImpl implements URLService {
     @Override
     public ShortenURL shortenURL(String originURL) {
         String hash = RandomStringUtils.randomAlphabetic(7);
-        URL url = new URL(hash,
-                originURL,
-                new Date(System.currentTimeMillis()),
-                new Date(System.currentTimeMillis() + 60 * 60 * 24 * 365));
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        URL url = new URL();
+        url.setHash(hash)
+                .setOriginURL(originURL)
+                .setCreationDate(Timestamp.valueOf(localDateTime))
+                .setExpirationDate(Timestamp.valueOf(localDateTime.plusMonths(12)));
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.getPrincipal() instanceof UserDetails) {
-            url.setUserId(((UserDetailsImpl) authentication.getPrincipal()).getId());
+            url.setUser(new User().setUserId(((UserDetailsImpl) authentication.getPrincipal()).getUserId()));
         } else {
-            url.setUserId(null);
+            url.setUser(null);
         }
 
         urlRepository.save(url);

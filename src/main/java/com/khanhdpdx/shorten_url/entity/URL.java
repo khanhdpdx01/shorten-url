@@ -1,73 +1,36 @@
 package com.khanhdpdx.shorten_url.entity;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
-@Document(collection = "shorten_url")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Accessors(chain = true)
+@Table(name = "url")
 public class URL {
+    @Id
+    @GeneratedValue( generator = "uuid2" )
+    @GenericGenerator( name = "uuid2", strategy = "uuid2" )
+    @Column(columnDefinition = "BINARY(16)" )
+    private UUID urlId;
     private String hash;
     private String originURL;
-    private Date creationDate;
-    private Date expirationDate;
-    private String userId;
+    private Timestamp creationDate;
+    private Timestamp expirationDate;
 
-    public URL() {
-    }
-
-    public URL(String hash, String originURL, Date creationDate, Date expirationDate, String userId) {
-        this.hash = hash;
-        this.originURL = originURL;
-        this.creationDate = creationDate;
-        this.expirationDate = expirationDate;
-        this.userId = userId;
-    }
-
-    public URL(String hash, String originURL, Date creationDate, Date expirationDate) {
-        this.hash = hash;
-        this.originURL = originURL;
-        this.creationDate = creationDate;
-        this.expirationDate = expirationDate;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public String getOriginURL() {
-        return originURL;
-    }
-
-    public void setOriginURL(String originURL) {
-        this.originURL = originURL;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

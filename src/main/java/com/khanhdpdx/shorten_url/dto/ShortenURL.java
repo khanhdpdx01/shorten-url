@@ -1,5 +1,7 @@
 package com.khanhdpdx.shorten_url.dto;
 
+import static com.khanhdpdx.shorten_url.constant.AppConstant.domainName;
+
 public class ShortenURL {
     private String shortenURL;
 
@@ -7,7 +9,7 @@ public class ShortenURL {
     }
 
     public ShortenURL(String shortenURL) {
-        this.shortenURL = "http://localhost:8080/" + shortenURL;
+        this.shortenURL = domainName + ":8080/" + shortenURL;
     }
 
     public String getShortenURL() {

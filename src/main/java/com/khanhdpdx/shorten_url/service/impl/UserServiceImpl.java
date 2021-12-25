@@ -1,6 +1,7 @@
 package com.khanhdpdx.shorten_url.service.impl;
 
 import com.khanhdpdx.shorten_url.dto.user.SignupRequest;
+import com.khanhdpdx.shorten_url.entity.Role;
 import com.khanhdpdx.shorten_url.entity.User;
 import com.khanhdpdx.shorten_url.repository.UserRepository;
 import com.khanhdpdx.shorten_url.service.UserService;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setCreationDate(new Date());
-        user.setRoleName("ROLE_USER");
+        user.setRole(new Role().setRoleName("ROLE_USER"));
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         userRepository.save(user);
     }

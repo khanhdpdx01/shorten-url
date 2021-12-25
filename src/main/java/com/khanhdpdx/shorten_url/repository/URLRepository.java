@@ -1,8 +1,8 @@
 package com.khanhdpdx.shorten_url.repository;
 
 import com.khanhdpdx.shorten_url.entity.URL;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface URLRepository extends MongoRepository<URL, String> {
+public interface URLRepository extends JpaRepository<URL, String> {
     URL getFirstByHash(String hash);
 }

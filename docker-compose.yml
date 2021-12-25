@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.26
+    container_name: shorten_url_db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=Khanh2001!
+      - MYSQL_USER=khanhdpdx
+      - MYSQL_DATABASE=shorten_url
+      - MYSQL_TCP_PORT=3306
+    volumes:
+      - ./database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+  api:
+    container_name: shorten_url_app
+    restart: always
+    build:
+      context: ./
+    environment:
+      - DATABASE_USERNAME=khanhdpdx
+      - DATABASE_PASSWORD=Khanh2001!
+      - DATABASE_HOST=db
+      - DATABASE_NAME=shorten_url
+      - DATABASE_PORT=3306
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - backend
+    links:
+      - db
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  database:
