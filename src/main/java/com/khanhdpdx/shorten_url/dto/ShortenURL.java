@@ -9,7 +9,7 @@ public class ShortenURL {
     }
 
     public ShortenURL(String shortenURL) {
-        this.shortenURL = domainName + ":3000/" + shortenURL;
+        this.shortenURL = domainName + "/" + shortenURL;
     }
 
     public String getShortenURL() {
