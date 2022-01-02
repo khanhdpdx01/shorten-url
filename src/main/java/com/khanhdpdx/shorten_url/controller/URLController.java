@@ -1,6 +1,7 @@
 package com.khanhdpdx.shorten_url.controller;
 
 import com.khanhdpdx.shorten_url.dto.ShortenURL;
+import com.khanhdpdx.shorten_url.dto.UrlDTO;
 import com.khanhdpdx.shorten_url.entity.URL;
 import com.khanhdpdx.shorten_url.service.URLService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +25,7 @@ public class URLController {
         return "index";
     }
 
-    @GetMapping("/{hash:[A-Za-z]+}")
+    @GetMapping("/{hash:[-A-Za-z]+}")
     @ResponseBody
     public ResponseEntity<?> getOriginURL(@PathVariable("hash") String hash) throws URISyntaxException {
         URL url = urlService.getOriginURL(hash);
@@ -45,7 +43,10 @@ public class URLController {
 
     @PostMapping("/shorten-url")
     @ResponseBody
-    public ShortenURL shortenURL(String originURL) {
-        return urlService.shortenURL(originURL);
+    public ShortenURL shortenURL(@RequestBody UrlDTO urlDTO) {
+        System.out.println(urlDTO.getOriginURL());
+        System.out.println(urlDTO.getCustomSlug());
+        return urlService.shortenURL(urlDTO.getOriginURL(), urlDTO.getCustomSlug());
     }
+
 }

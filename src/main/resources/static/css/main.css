@@ -130,13 +130,26 @@ button {
     padding: 20px 0;
 }
 
-.input-shorten {
+.group-input {
     width: 80%;
+    display: flex;
+}
+
+.input-shorten {
     height: 60px;
     border-radius: 8px;
     font-size: 20px;
     color: #36383b;
     padding: 0 20px;
+}
+
+.input-link {
+    width: 70%;
+}
+
+.input-slug {
+    width: 30%;
+    margin-left: .5rem;
 }
 
 .btn-shorten, .btn-shorted-copy {

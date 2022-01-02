@@ -10,5 +10,5 @@ public interface URLService {
 
     List<URL> getURLs();
 
-    ShortenURL shortenURL(String originURL);
+    ShortenURL shortenURL(String originURL, String customSlug);
 }

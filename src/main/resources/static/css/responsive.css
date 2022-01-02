@@ -45,6 +45,27 @@
         padding: 0 4px;
         width: 15%;
     }
+
+    .area-input-wrapper,
+    .area-output-wrapper {
+        width: var(--grid-mobile-tablet);
+    }
+
+    .form-shorten {
+        flex-direction: column;
+    }
+
+    .input-shorten,
+    .btn-shorten,
+    .btn-shorted-copy {
+        width: 100%;
+        margin: 10px 0 0 0;
+    }
+
+    .group-input {
+        width: 100%;
+        flex-direction: column;
+    }
 }
 
 /* Tablet */
@@ -115,18 +136,6 @@
         width: 100%;
         padding: 10px 30px;
     }
-
-    .form-shorten {
-        flex-direction: column;
-    }
-
-    .input-shorten,
-    .btn-shorten,
-    .btn-shorted-copy {
-        width: 100%;
-        margin: 10px 0 0 0;
-    }
-
 }
 
 /* Mobile */

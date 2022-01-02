@@ -46,7 +46,10 @@
     <div class="area-input">
         <div class="area-input-wrapper">
             <form class="form-shorten" method="POST">
-                <input class="input-shorten" placeholder="Shorten your link" type="text">
+                <div class="group-input">
+                    <input class="input-shorten input-link" placeholder="Shorten your link" type="text">
+                    <input class="input-shorten input-slug" placeholder="Custom slug" type="text">
+                </div>
                 <button class="btn-shorten" type="submit">Shorten</button>
                 <button class="btn-shorted-copy" type="button">Copy</button>
             </form>
@@ -67,15 +70,20 @@
 
         $(document).on('submit', '.form-shorten', function (event) {
             event.preventDefault();
-            const originURL = $('.input-shorten').val();
+            const originURL = $('.input-link').val();
+            const customSlug = $('.input-slug').val();
 
             if(originURL == "") alert("Please fill in input.");
             else if(!isUrl(originURL)) alert("Your url is not valid.");
             else
                 $.ajax({
                 type: 'POST',
+                contentType : "application/json",
                 url: '/shorten-url',
-                data: {originURL: originURL},
+                data: JSON.stringify({
+                    "originURL": originURL,
+                    "customSlug": customSlug
+                }),
                 dataType: 'json',
                 success: (response) => {
                     const shortedURL = response["shortenURL"];
@@ -99,13 +107,14 @@
 
                     $('.btn-shorten').hide();
                     $('.btn-shorted-copy').show();
-                    $('.input-shorten').val(shortedURL);
-                    $('.input-shorten').css("color","rgb(2, 54, 185)")
+                    $('.input-link').val(shortedURL);
+                    $('.input-slug').val("");
+                    $('.input-link').css("color","rgb(2, 54, 185)")
                 }
             })
         })
         $(document).on('click', '.btn-shorted-copy', function () {
-            copyToClipboard($('.input-shorten').val())
+            copyToClipboard($('.input-link').val())
         })
 
         $(document).on('click', '.btn-copy', function () {

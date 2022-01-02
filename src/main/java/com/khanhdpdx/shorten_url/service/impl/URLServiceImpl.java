@@ -3,6 +3,7 @@ package com.khanhdpdx.shorten_url.service.impl;
 import com.khanhdpdx.shorten_url.dto.ShortenURL;
 import com.khanhdpdx.shorten_url.entity.URL;
 import com.khanhdpdx.shorten_url.entity.User;
+import com.khanhdpdx.shorten_url.exception.CustomSlugExistedException;
 import com.khanhdpdx.shorten_url.exception.UrlNotFoundException;
 import com.khanhdpdx.shorten_url.repository.URLRepository;
 import com.khanhdpdx.shorten_url.security.UserDetailsImpl;
@@ -15,11 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class URLServiceImpl implements URLService {
@@ -28,11 +27,8 @@ public class URLServiceImpl implements URLService {
 
     @Override
     public URL getOriginURL(String hash) {
-        URL url = urlRepository.getFirstByHash(hash);
-        if (url == null) {
-            /*return ResponseEntity.badRequest().body(new ApiResponse(false, "Url is invalid"));*/
-            throw new UrlNotFoundException();
-        }
+        URL url = urlRepository.getFirstByHash(hash)
+                .orElseThrow(() -> new UrlNotFoundException());
         return url;
     }
 
@@ -42,18 +38,31 @@ public class URLServiceImpl implements URLService {
     }
 
     @Override
-    public ShortenURL shortenURL(String originURL) {
-        String hash = RandomStringUtils.randomAlphabetic(7);
-        LocalDateTime localDateTime = LocalDateTime.now();
+    public ShortenURL shortenURL(String originURL, String customSlug) {
+        String hash = null;
+        Optional<URL> checkUrl;
 
+        /* Kiem tra URL da ton tai hay chua*/
+        if(!customSlug.isBlank()) {
+            checkUrl = urlRepository.getFirstByHash(customSlug);
+            if (checkUrl.isPresent()) throw new CustomSlugExistedException();
+            hash = customSlug;
+        } else {
+            do {
+                hash = RandomStringUtils.randomAlphabetic(7);
+                checkUrl = urlRepository.getFirstByHash(hash);
+            } while(checkUrl.isPresent());
+        }
+
+        LocalDateTime localDateTime = LocalDateTime.now();
         URL url = new URL();
         url.setHash(hash)
                 .setOriginURL(originURL)
                 .setCreationDate(Timestamp.valueOf(localDateTime))
                 .setExpirationDate(Timestamp.valueOf(localDateTime.plusMonths(12)));
 
+        /* Lấy userId từ SecurityContextHolder*/
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication.getPrincipal() instanceof UserDetails) {
             url.setUser(new User().setUserId(((UserDetailsImpl) authentication.getPrincipal()).getUserId()));
         } else {
